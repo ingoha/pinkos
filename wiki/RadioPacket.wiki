@@ -2,6 +2,7 @@
 
 All packets have the following header:
 
+{{{
 typedef struct
 {
     uint8_t len;
@@ -10,6 +11,7 @@ typedef struct
     uint8_t seq;
     uint8_t type;
 } packet_t;
+}}}
 
 The top bit of the sequence number is the request ACK flag.
 
