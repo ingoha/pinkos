@@ -1,4 +1,10 @@
 #summary FAQ
-= Are you commie scum? =
+== Are you communists? ==
 
-No, we just like hacking little girls' toys.
+We hack little girls' toys. We do not disciminate on the basis of colour.
+
+== Why not use Altos? ==
+
+Altos is both complex and specialised.
+
+It does many things more efficiently and concurrently than PinkOS but is not so simple.
