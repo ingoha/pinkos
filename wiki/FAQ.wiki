@@ -1,10 +1,10 @@
-#summary FAQ
 == Are you communists? ==
 
 No.
 
-== Why not use Altos? ==
+== Is PinkOS really an OS? ==
 
-Altos is both complex and specialised.
+It depends on your definition.
+PinkOS does not do threads, processes, memory management or privilege separation. It doesn't dynamically load code.
 
-It does many things more efficiently and concurrently than PinkOS but is not so simple.
+If you want a "real operating system" for the CC1110, look at Keith Packard's [http://keithp.com/git?p=altos.git;a=tree altos].
