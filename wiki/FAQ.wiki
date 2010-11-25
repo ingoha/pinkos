@@ -14,3 +14,7 @@ If you want a "real operating system" for the CC1110, look at Keith Packard's [h
 You need a Chipcon device programmer. I use a GoodFET. SmartRF and CCFlasher are other options.
 
 http://travisgoodspeed.blogspot.com/2010/03/im-me-goodfet-wiring-tutorial.html
+
+== Can I use PinkOS on an unmodified IM-Me dongle? ==
+
+There's currently no support for communicating over the Cypress SPI interface. It may be possible.
