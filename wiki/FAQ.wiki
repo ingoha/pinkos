@@ -18,3 +18,8 @@ http://travisgoodspeed.blogspot.com/2010/03/im-me-goodfet-wiring-tutorial.html
 == Can I use PinkOS on an unmodified IM-Me dongle? ==
 
 There's currently no support for communicating over the Cypress SPI interface. It may be possible.
+
+== Are any other CC111x boards supported? ==
+
+Not yet. But adding them should be easy.
+
