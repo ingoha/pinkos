@@ -26,10 +26,10 @@ Currently, radio network addresses are hardcoded into each firmware.
 Set the address at compile time with DEVADDR=<0-255>. Note - 0 is the broadcast address.
 
 For IM-Me handset:
-$ make clean && make DEVICE=DEVICE_HANDSET DEVADDR=<address>
+$ make clean && make DEVICE=HANDSET DEVADDR=<address>
 
 For IM-Me dongle:
-$ make clean && make DEVICE=DEVICE_DONGLE DEVADDR=<address>
+$ make clean && make DEVICE=DONGLE DEVADDR=<address>
 
 Programming:
 ------------
