@@ -7,4 +7,10 @@ No.
 It depends on your definition.
 PinkOS does not do threads, processes, memory management or privilege separation. It doesn't dynamically load code.
 
-If you want a "real operating system" for the CC1110, look at Keith Packard's [http://keithp.com/git?p=altos.git;a=tree altos].
+If you want a "real operating system" for the CC1110, look at Keith Packard's [http://keithp.com/git?p=altos.git;a=tree AltOS], the AltusMetrum 8051 operating system.
+
+== How do I load PinkOS onto a board? ==
+
+You need a Chipcon device programmer. I use a GoodFET. SmartRF and CCFlasher are other options.
+
+http://travisgoodspeed.blogspot.com/2010/03/im-me-goodfet-wiring-tutorial.html
