@@ -8,6 +8,8 @@ Joby Taffey <jrt@hodgepig.org>
 It provides a bootloader with a command line console (either serially or using
 LCD + keyboard) and both peer-to-peer and broadcast packet radio.
 
+To get started, read precompiled/README
+
 Status:
 -------
 
