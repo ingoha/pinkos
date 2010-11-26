@@ -1,8 +1,6 @@
 #include "common.h"
-#include "uart0.h"
 
 #pragma sdcc_hash +
-
 #define ISR_BODY(x,handler) \
     push psw \
     jnb  psw.1, 00001$ \
@@ -23,6 +21,8 @@ _asm \
     ISR_BODY(x,handler) \
 _endasm; \
 }
+
+/* declare interrupt vectors and generate code to call into pinkos or app */
 
 #ifdef BOARD_IMME_DONGLE
 DEF_ISR(URX0_VECTOR, _uart0_isr)
