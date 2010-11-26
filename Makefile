@@ -6,35 +6,72 @@ DEVADDR = 0
 # size of console line buffer
 LINEBUF_MAX=32
 
-# common libraries
-LIBS = \
-    os/pinkos.rel      \
-    os/watchdog.rel    \
-    os/clock.rel       \
-    os/console.rel     \
-    os/shell.rel       \
-    os/parse.rel       \
-    os/radio.rel       \
-    os/packet.rel      
+APPLICATION_OFFSET=0x4000
 
 #SVNREV = `svn info | grep "Last Changed Rev" | sed -e "s/.*: //"`
 SVNREV = 0
 
-
 CC = sdcc 
-CFLAGS = -V -Iinclude --no-pack-iram -DAPPLICATION_OFFSET=0x4000 -DPINKOS
-
-CFLAGS += -DBUILD_VERSION=$(SVNREV) -DDEVADDR=$(DEVADDR) -DLINEBUF_MAX=$(LINEBUF_MAX)
-
+COMMON_CFLAGS = -Iinclude --no-pack-iram -DAPPLICATION_OFFSET=$(APPLICATION_OFFSET)
+COMMON_CFLAGS += -DBUILD_VERSION=$(SVNREV) -DDEVADDR=$(DEVADDR) -DLINEBUF_MAX=$(LINEBUF_MAX)
 ifneq ($(DEVICE),HANDSET)
-CFLAGS += -DBOARD_IMME_DONGLE
-LIBS += os/uart0.rel
+COMMON_CFLAGS += -DBOARD_IMME_DONGLE
 else
-CFLAGS += -DBOARD_IMME_HANDSET
-LIBS += os/key.rel os/spi.rel os/lcd.rel os/tiles.rel os/lcdterm.rel
+COMMON_CFLAGS += -DBOARD_IMME_HANDSET
 endif
 
-LDFLAGS = -V --code-loc 0x0000
+APP_CFLAGS =
+PINKOS_CFLAGS = -DPINKOS
+
+APP_DIR = app
+PINKOS_DIR = pinkos
+
+# common libraries
+COMMON_LIBS = \
+    common/watchdog.rel    \
+    common/clock.rel       \
+    common/console.rel     \
+    common/shell.rel       \
+    common/parse.rel       \
+    common/radio.rel       \
+    common/packet.rel
+
+ifneq ($(DEVICE),HANDSET)
+COMMON_LIBS += common/uart0.rel
+else
+COMMON_LIBS += common/key.rel common/spi.rel common/lcd.rel common/tiles.rel common/lcdterm.rel
+endif
+
+
+PINKOS_LIBS = \
+    pinkos/pinkos.rel
+
+APP_LIBS = \
+    app/app.rel
+
+
+COMMON_LDFLAGS = -V
+PINKOS_LDFLAGS = --code-loc 0x0000
+APP_LDFLAGS = --code-loc $(APPLICATION_OFFSET)
+
+CFLAGS = $(COMMON_CFLAGS)
+LDFLAGS = $(COMMON_LDFLAGS)
+
+ifeq ($(APP),1)
+CFLAGS += $(APP_CFLAGS)
+LDFLAGS += $(APP_LDFLAGS)
+LIBS = $(APP_LIBS)
+TARGET = app
+DIR = app
+else
+CFLAGS += $(PINKOS_CFLAGS)
+LDFLAGS += $(PINKOS_LDFLAGS)
+LIBS = $(PINKOS_LIBS)
+TARGET = pinkos
+DIR = pinkos
+endif
+
+LIBS += $(COMMON_LIBS)
 
 all: $(TARGET).hex
 
@@ -43,16 +80,21 @@ all: $(TARGET).hex
 
 $(TARGET).hex: $(LIBS)
 	sdcc $(LDFLAGS) $(LIBS)
-	packihx < os/$(TARGET).ihx > $(TARGET).hex
+	packihx < $(DIR)/$(TARGET).ihx > $(TARGET).hex
+
+erase:
+	goodfet.cc erase
 
 install: $(TARGET).hex
-	goodfet.cc erase
 	goodfet.cc flash $(TARGET).hex
 	goodfet.cc info
+
 verify: $(TARGET).hex
 	goodfet.cc verify $(TARGET).hex
 
 clean:
-	rm -f os/*.hex os/*.ihx os/*.rel os/*.asm os/*.lst os/*.rst os/*.sym os/*.lnk os/*.map os/*.mem
+	rm -f pinkos/*.hex pinkos/*.ihx pinkos/*.rel pinkos/*.asm pinkos/*.lst pinkos/*.rst pinkos/*.sym pinkos/*.lnk pinkos/*.map pinkos/*.mem
+	rm -f common/*.hex common/*.ihx common/*.rel common/*.asm common/*.lst common/*.rst common/*.sym common/*.lnk common/*.map common/*.mem
+	rm -f app/*.hex app/*.ihx app/*.rel app/*.asm app/*.lst app/*.rst app/*.sym app/*.lnk app/*.map app/*.mem
 	rm -f *.hex *.ihx *.rel *.asm *.lst *.rst *.sym *.lnk *.map *.mem
 
