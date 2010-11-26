@@ -49,6 +49,34 @@ static void cmd_reset(void)
     watchdog_cpureset();
 }
 
+static void cmd_run(void)
+{
+    /* disable interrupts */
+    EA = 0;
+
+    /* direct interrupts to the app */
+    F1 = 0;
+
+    /* down the rabbit hole */
+_asm
+    clr a
+    mov ie, a
+    mov ip, a
+    mov psw, a
+    mov dpl, a
+    mov dph, a
+    mov r7, a
+    mov r6, a
+    mov r5, a
+    mov r4, a
+    mov r3, a
+    mov r2, a
+    mov r1, a
+    mov r0, a
+    mov sp, #7
+    ljmp #APPLICATION_OFFSET
+_endasm;
+}
 
 /* build and send a packet */
 /* tx <dst8> <seq8> <typ8> <str> */
@@ -296,6 +324,9 @@ void shell_exec(data char *line)
     else
     if (0 == strcmp(*argv, "gfxtest"))
         cmd_gfxtest();
+    else
+    if (0 == strcmp(*argv, "run"))
+        cmd_run();
 #endif
 }
 
