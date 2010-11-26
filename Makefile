@@ -20,10 +20,8 @@ else
 COMMON_CFLAGS += -DBOARD_IMME_HANDSET
 endif
 
-APP_CFLAGS =
 PINKOS_CFLAGS = -DPINKOS
 
-APP_DIR = app
 PINKOS_DIR = pinkos
 
 # common libraries
@@ -46,30 +44,17 @@ PINKOS_LIBS = \
     pinkos/shell.rel       \
     common/parse.rel 
 
-APP_LIBS = \
-    app/app.rel
-
-
 COMMON_LDFLAGS = -V
 PINKOS_LDFLAGS = --code-loc 0x0000
-APP_LDFLAGS = --code-loc $(APPLICATION_OFFSET)
 
 CFLAGS = $(COMMON_CFLAGS)
 LDFLAGS = $(COMMON_LDFLAGS)
 
-ifeq ($(APP),1)
-CFLAGS += $(APP_CFLAGS)
-LDFLAGS += $(APP_LDFLAGS)
-LIBS = $(APP_LIBS)
-TARGET = app
-DIR = app
-else
 CFLAGS += $(PINKOS_CFLAGS)
 LDFLAGS += $(PINKOS_LDFLAGS)
 LIBS = $(PINKOS_LIBS)
 TARGET = pinkos
 DIR = pinkos
-endif
 
 LIBS += $(COMMON_LIBS)
 
