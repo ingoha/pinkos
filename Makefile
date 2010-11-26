@@ -31,8 +31,6 @@ COMMON_LIBS = \
     common/watchdog.rel    \
     common/clock.rel       \
     common/console.rel     \
-    common/shell.rel       \
-    common/parse.rel       \
     common/radio.rel       \
     common/packet.rel
 
@@ -44,7 +42,9 @@ endif
 
 
 PINKOS_LIBS = \
-    pinkos/pinkos.rel
+    pinkos/pinkos.rel      \
+    pinkos/shell.rel       \
+    common/parse.rel 
 
 APP_LIBS = \
     app/app.rel
