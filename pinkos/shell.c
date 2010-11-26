@@ -312,6 +312,9 @@ void shell_exec(data char *line)
     if (0 == strcmp(*argv, "reset"))
         cmd_reset();
     else
+    if (0 == strcmp(*argv, "boot"))
+        cmd_boot();
+    else
     if (0 == strcmp(*argv, "led"))
         cmd_led();
     else
@@ -336,9 +339,6 @@ void shell_exec(data char *line)
     else
     if (0 == strcmp(*argv, "gfxtest"))
         cmd_gfxtest();
-    else
-    if (0 == strcmp(*argv, "boot"))
-        cmd_boot();
 #endif
 }
 

@@ -29,8 +29,16 @@
 #include "common.h"
 #include "watchdog.h"
 #include "clock.h"
-#include "led.h"
 #include "console.h"
+#include "led.h"
+#include "radio.h"
+#include "packet.h"
+#ifdef BOARD_IMME_HANDSET
+#include "key.h"
+#include "spi.h"
+#include "lcd.h"
+#include "lcdterm.h"
+#endif
 #ifdef BOARD_IMME_DONGLE
 #include "uart0.h"
 #endif
@@ -56,17 +64,24 @@ int main(void)
 
 #ifdef BOARD_IMME_DONGLE
     uart0_init();
-    console_init();
-    banner();
 #endif
-    
+#ifdef BOARD_IMME_HANDSET
+    spi_init();
+    key_init();
+    lcdterm_init();
+#endif
+
     /* enable interrupts */
     EA = 1;
 
+    console_init();
+    banner();
+
     while(1)
     {
-        led_toggle();
-//        clock_delayms(500);
+#ifdef BOARD_IMME_HANDSET
+        lcdterm_tick();
+#endif
         console_tick();
     }
 }
@@ -82,5 +97,7 @@ void shell_exec(data char *line)
     console_newline();
 }
 
+#ifdef BOARD_IMME_DONGLE
 extern void uart0_isr(void) __interrupt URX0_VECTOR;
+#endif
 
