@@ -31,8 +31,6 @@
 #include "clock.h"
 #include "console.h"
 #include "led.h"
-#include "radio.h"
-#include "packet.h"
 #ifdef BOARD_IMME_HANDSET
 #include "key.h"
 #include "spi.h"
@@ -86,13 +84,9 @@ int main(void)
     }
 }
 
-void packet_rx_callback(uint8_t srcAddr, uint8_t seq, uint8_t type, const data uint8_t *buf, uint8_t len)
-{
-}
-
 void shell_exec(data char *line)
 {
-    console_puts("line = ");
+    console_puts("You said: ");
     console_puts(line);
     console_newline();
 }

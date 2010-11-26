@@ -1,11 +1,12 @@
 PinkOS
 ======
 
-PinkOS is a minimal operating system for the GirlTech IM-Me and CC111x.
+PinkOS is a minimal operating system/bootloader for the GirlTech IM-Me and CC111x.
 http://code.google.com/p/pinkos/
 Joby Taffey <jrt@hodgepig.org>
 
-It provides a command line console (either serially or using LCD + keyboard) and both peer-to-peer and broadcast packet radio.
+It provides a bootloader with a command line console (either serially or using
+LCD + keyboard) and both peer-to-peer and broadcast packet radio.
 
 Status:
 -------
@@ -13,10 +14,10 @@ Status:
 PinkOS is working, but incomplete.
 
 Desired features include:
+ * flash write support in the bootloader
  * a reliable transport protocol
  * flow controlled serial
- * flash support (for storing configuration data)
- * a bootloader for serial/radio upgrades
+ * flash based non-volatile config data
  * support for USB CDC on CC1111
 
 Building:
@@ -25,16 +26,23 @@ Building:
 Currently, radio network addresses are hardcoded into each firmware.
 Set the address at compile time with DEVADDR=<0-255>. Note - 0 is the broadcast address.
 
+To build and install PinkOS:
+
+$ make erase
+
 For IM-Me handset:
-$ make clean && make DEVICE=HANDSET DEVADDR=<address>
+$ make clean && make DEVICE=HANDSET DEVADDR=<address> install
 
 For IM-Me dongle:
-$ make clean && make DEVICE=DONGLE DEVADDR=<address>
+$ make clean && make DEVICE=DONGLE DEVADDR=<address> install
 
-Programming:
-------------
+To build and install an application:
+$ cd apps/speccan && make install     (note: handset only)
 
-$ make install
+or
+
+$ cd apps/shellapp && make clean && make DEVICE=DONGLE install
+$ cd apps/shellapp && make clean && make DEVICE=HANDSET install
 
 
 LCD Console:
@@ -67,6 +75,12 @@ Console Commands:
 
 help
     show help text
+
+reset
+    reset
+
+boot
+    boot application from 0x4000
 
 xdata <addr16> [data8]
     peek/poke xram
