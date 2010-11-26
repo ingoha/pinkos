@@ -30,6 +30,23 @@
 #include "watchdog.h"
 #include "clock.h"
 #include "led.h"
+#include "console.h"
+#ifdef BOARD_IMME_DONGLE
+#include "uart0.h"
+#endif
+
+static void banner(void)
+{
+    led_on();
+    clock_delayms(100);
+
+    console_puts("app");
+    console_newline();
+
+    led_off();
+    clock_delayms(100);
+}
+
 
 int main(void)
 {
@@ -37,14 +54,33 @@ int main(void)
     clock_init();
     led_init();
 
+#ifdef BOARD_IMME_DONGLE
+    uart0_init();
+    console_init();
+    banner();
+#endif
+    
+    /* enable interrupts */
+    EA = 1;
+
     while(1)
     {
         led_toggle();
-        clock_delayms(500);
+//        clock_delayms(500);
+        console_tick();
     }
 }
 
 void packet_rx_callback(uint8_t srcAddr, uint8_t seq, uint8_t type, const data uint8_t *buf, uint8_t len)
 {
 }
+
+void shell_exec(data char *line)
+{
+    console_puts("line = ");
+    console_puts(line);
+    console_newline();
+}
+
+extern void uart0_isr(void) __interrupt URX0_VECTOR;
 
