@@ -1,4 +1,4 @@
-TARGET=pinkos
+TARGET=app
 
 # hardcoded radio network address
 DEVADDR = 0
@@ -8,33 +8,25 @@ LINEBUF_MAX=32
 
 # common libraries
 LIBS = \
-    os/pinkos.rel      \
+    app/app.rel      \
     os/watchdog.rel    \
-    os/clock.rel       \
-    os/console.rel     \
-    os/shell.rel       \
-    os/parse.rel       \
-    os/radio.rel       \
-    os/packet.rel      
+    os/clock.rel       
 
 #SVNREV = `svn info | grep "Last Changed Rev" | sed -e "s/.*: //"`
 SVNREV = 0
 
-
 CC = sdcc 
-CFLAGS = -V -Iinclude --no-pack-iram -DAPPLICATION_OFFSET=0x4000 -DPINKOS
+CFLAGS = -V -Iinclude --no-pack-iram
 
 CFLAGS += -DBUILD_VERSION=$(SVNREV) -DDEVADDR=$(DEVADDR) -DLINEBUF_MAX=$(LINEBUF_MAX)
 
 ifneq ($(DEVICE),HANDSET)
 CFLAGS += -DBOARD_IMME_DONGLE
-LIBS += os/uart0.rel
 else
 CFLAGS += -DBOARD_IMME_HANDSET
-LIBS += os/key.rel os/spi.rel os/lcd.rel os/tiles.rel os/lcdterm.rel
 endif
 
-LDFLAGS = -V --code-loc 0x0000
+LDFLAGS = -V --code-loc 0x4000
 
 all: $(TARGET).hex
 
@@ -43,7 +35,7 @@ all: $(TARGET).hex
 
 $(TARGET).hex: $(LIBS)
 	sdcc $(LDFLAGS) $(LIBS)
-	packihx < os/$(TARGET).ihx > $(TARGET).hex
+	packihx < app/$(TARGET).ihx > $(TARGET).hex
 
 install: $(TARGET).hex
 	goodfet.cc erase
@@ -53,6 +45,6 @@ verify: $(TARGET).hex
 	goodfet.cc verify $(TARGET).hex
 
 clean:
-	rm -f os/*.hex os/*.ihx os/*.rel os/*.asm os/*.lst os/*.rst os/*.sym os/*.lnk os/*.map os/*.mem
+	rm -f app/*.hex app/*.ihx app/*.rel app/*.asm app/*.lst app/*.rst app/*.sym app/*.lnk app/*.map app/*.mem
 	rm -f *.hex *.ihx *.rel *.asm *.lst *.rst *.sym *.lnk *.map *.mem
 

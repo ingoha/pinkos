@@ -27,38 +27,20 @@
  */
 
 #include "common.h"
-#include "uart0.h"
-#include "console.h"
+#include "watchdog.h"
+#include "clock.h"
+#include "led.h"
 
-void uart0_isr(void)
-#ifndef PINKOS
-__interrupt URX0_VECTOR
-#endif
+int main(void)
 {
-    URX0IF = 0;
+    watchdog_init();
+    clock_init();
+    led_init();
 
-    if (console_rx_ready_callback())
-        console_rx_callback(U0DBUF);
-}
-
-void uart0_init(void)
-{
-    PERCFG = (PERCFG & ~PERCFG_U0CFG) | PERCFG_U1CFG;
-    P0SEL |= BIT5 | BIT4 | BIT3 | BIT2;
-
-    U0CSR = 0x80 | 0x40;    // UART, RX on
-
-    U0BAUD = 34;    // 115200
-    U0GCR = 12;
-
-    URX0IF = 1;
-    URX0IE = 1;
-}
-
-void uart0_putc(uint8_t ch)
-{
-    U0DBUF = ch;
-    while(!(U0CSR & U0CSR_TX_BYTE)); // wait for byte to be transmitted
-    U0CSR &= ~U0CSR_TX_BYTE;         // Clear transmit byte status
+    while(1)
+    {
+        led_toggle();
+        clock_delayms(500);
+    }
 }
 

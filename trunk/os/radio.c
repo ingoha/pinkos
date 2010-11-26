@@ -160,7 +160,10 @@ void radio_init(uint8_t device_address)
     radio_rx();
 }
 
-void rftxrx_isr(void) __interrupt RFTXRX_VECTOR
+void rftxrx_isr(void)
+#ifndef PINKOS
+__interrupt RFTXRX_VECTOR
+#endif
 {
     if (MARCSTATE == MARC_STATE_TX)
     {
@@ -186,7 +189,10 @@ void rftxrx_isr(void) __interrupt RFTXRX_VECTOR
     }
 }
 
-void rf_isr(void) __interrupt RF_VECTOR
+void rf_isr(void)
+#ifndef PINKOS
+__interrupt RF_VECTORF
+#endif
 {
     /* clear flags */
     S1CON &= ~(S1CON_RFIF_1 + S1CON_RFIF_0);

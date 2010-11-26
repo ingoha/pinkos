@@ -74,7 +74,8 @@ int main(void)
 #endif
     radio_init(DEVADDR);
 
-    /* Enable global interrupts */
+    /* Enable global interrupts handled by bootloader */
+    F1 = 1;
     EA = 1;
 
     console_init();
@@ -145,11 +146,7 @@ void packet_rx_callback(uint8_t srcAddr, uint8_t seq, uint8_t type, const data u
  *   contains the function main."
  *   http://sdcc.sourceforge.net/doc/sdccman.pdf
  */
-#ifdef BOARD_IMME_DONGLE
-extern void uart0rx_isr(void) __interrupt URX0_VECTOR;
-#endif
-extern void rftxrx_isr(void) __interrupt RFTXRX_VECTOR;
-extern void rf_isr(void) __interrupt RF_VECTOR;
+#include "isr.c"
 
 
 
