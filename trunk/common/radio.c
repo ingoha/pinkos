@@ -191,7 +191,7 @@ __interrupt RFTXRX_VECTOR
 
 void rf_isr(void)
 #ifndef PINKOS
-__interrupt RF_VECTORF
+__interrupt RF_VECTOR
 #endif
 {
     /* clear flags */
