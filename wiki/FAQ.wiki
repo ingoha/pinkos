@@ -4,8 +4,7 @@ No.
 
 == Is PinkOS really an OS? ==
 
-It depends on your definition.
-PinkOS does not do threads, processes, memory management or privilege separation. It doesn't dynamically load code.
+It depends on your definition. PinkOS is presently a bootloader.
 
 If you want a "real operating system" for the CC1110, look at Keith Packard's [http://keithp.com/git?p=altos.git;a=tree AltOS], the AltusMetrum 8051 operating system.
 
@@ -22,4 +21,3 @@ There's currently no support for communicating over the Cypress SPI interface. I
 == Are any other CC111x boards supported? ==
 
 Not yet. But adding them should be easy.
-
